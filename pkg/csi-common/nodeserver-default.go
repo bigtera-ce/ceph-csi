@@ -20,7 +20,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/ceph/ceph-csi/pkg/util"
+	"github.com/bigtera-ce/ceph-csi/pkg/util"
 
 	"context"
 
@@ -104,7 +104,7 @@ func (ns *DefaultNodeServer) NodeGetVolumeStats(ctx context.Context, req *csi.No
 		   Below issue covers this request for RBD and once its available, we can do the validation
 		   as per the spec.
 
-		   https://github.com/ceph/ceph-csi/issues/511
+		   https://github.com/bigtera-ce/ceph-csi/issues/511
 
 	*/
 

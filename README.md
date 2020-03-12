@@ -1,7 +1,7 @@
 # Ceph CSI
 
 [![Go Report
-Card](https://goreportcard.com/badge/github.com/ceph/ceph-csi)](https://goreportcard.com/report/github.com/ceph/ceph-csi)
+Card](https://goreportcard.com/badge/github.com/bigtera-ce/ceph-csi)](https://goreportcard.com/report/github.com/bigtera-ce/ceph-csi)
 [![Build
 Status](https://travis-ci.org/ceph/ceph-csi.svg?branch=master)](https://travis-ci.org/ceph/ceph-csi)
 
@@ -32,9 +32,9 @@ attaching them to workloads.
 Independent CSI plugins are provided to support RBD and CephFS backed volumes,
 
 - For details about configuration and deployment of RBD plugin, please refer
-  [rbd doc](https://github.com/ceph/ceph-csi/blob/master/docs/deploy-rbd.md) and
+  [rbd doc](https://github.com/bigtera-ce/ceph-csi/blob/master/docs/deploy-rbd.md) and
   for CephFS plugin configuration and deployment please
-  refer [cephfs doc](https://github.com/ceph/ceph-csi/blob/master/docs/deploy-cephfs.md).
+  refer [cephfs doc](https://github.com/bigtera-ce/ceph-csi/blob/master/docs/deploy-cephfs.md).
 - For example usage of RBD and CephFS CSI plugins, see examples in `examples/`.
 
 NOTE:
@@ -90,29 +90,29 @@ in the Kubernetes documentation.
 
 | Ceph CSI Release/Branch | Container image name         | Image Tag |
 | ----------------------- | ---------------------------- | --------- |
-| Master (Branch)         | quay.io/cephcsi/cephcsi      | canary    |
-| v2.0.0 (Release)        | quay.io/cephcsi/cephcsi      | v2.0.0    |
-| v1.2.2 (Release)        | quay.io/cephcsi/cephcsi      | v1.2.2    |
-| v1.2.1 (Release)        | quay.io/cephcsi/cephcsi      | v1.2.1    |
-| v1.2.0 (Release)        | quay.io/cephcsi/cephcsi      | v1.2.0    |
-| v1.1.0 (Release)        | quay.io/cephcsi/cephcsi      | v1.1.0    |
+| Master (Branch)         | bigtera/bigtera-csi      | canary    |
+| v2.0.0 (Release)        | bigtera/bigtera-csi      | v2.0.0    |
+| v1.2.2 (Release)        | bigtera/bigtera-csi      | v1.2.2    |
+| v1.2.1 (Release)        | bigtera/bigtera-csi      | v1.2.1    |
+| v1.2.0 (Release)        | bigtera/bigtera-csi      | v1.2.0    |
+| v1.1.0 (Release)        | bigtera/bigtera-csi      | v1.1.0    |
 | v1.0.0 (Branch)         | quay.io/cephcsi/cephfsplugin | v1.0.0    |
 | v1.0.0 (Branch)         | quay.io/cephcsi/rbdplugin    | v1.0.0    |
 
 ## Contributing to this repo
 
-Please follow [development-guide](<https://github.com/ceph/ceph-csi/tree/master/docs/development-guide.md>)
-and [coding style guidelines](<https://github.com/ceph/ceph-csi/tree/master/docs/coding.md>)
+Please follow [development-guide](<https://github.com/bigtera-ce/ceph-csi/tree/master/docs/development-guide.md>)
+and [coding style guidelines](<https://github.com/bigtera-ce/ceph-csi/tree/master/docs/coding.md>)
 if you are interested to contribute to this repo.
 
 ## Troubleshooting
 
-Please submit an issue at: [Issues](https://github.com/ceph/ceph-csi/issues)
+Please submit an issue at: [Issues](https://github.com/bigtera-ce/ceph-csi/issues)
 
 ## Weekly Bug Triage call
 
 We conduct weekly bug triage calls at our slack channel on Tuesdays.
-More details are available [here](https://github.com/ceph/ceph-csi/issues/463)
+More details are available [here](https://github.com/bigtera-ce/ceph-csi/issues/463)
 
 ## Contact
 

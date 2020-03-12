@@ -17,10 +17,10 @@ it is **highly** encouraged to:
    [install](https://golang.org/doc/install) it on your system.
 * Setup the [GOPATH](http://www.g33knotes.org/2014/07/60-second-count-down-to-go.html)
    environment.
-* Run `$ go get -d github.com/ceph/ceph-csi`
+* Run `$ go get -d github.com/bigtera-ce/ceph-csi`
    This will just download the source and not build it. The downloaded source
-   will be at `$GOPATH/src/github.com/ceph/ceph-csi`
-* Fork the [ceph-csi repo](https://github.com/ceph/ceph-csi) on Github.
+   will be at `$GOPATH/src/github.com/bigtera-ce/ceph-csi`
+* Fork the [ceph-csi repo](https://github.com/bigtera-ce/ceph-csi) on Github.
 * Add your fork as a git remote:
    `$ git remote add fork https://github.com/<your-github-username>/ceph-csi`
 

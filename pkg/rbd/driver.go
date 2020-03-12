@@ -17,8 +17,8 @@ limitations under the License.
 package rbd
 
 import (
-	csicommon "github.com/ceph/ceph-csi/pkg/csi-common"
-	"github.com/ceph/ceph-csi/pkg/util"
+	csicommon "github.com/bigtera-ce/ceph-csi/pkg/csi-common"
+	"github.com/bigtera-ce/ceph-csi/pkg/util"
 
 	"github.com/container-storage-interface/spec/lib/go/csi"
 	"k8s.io/klog"

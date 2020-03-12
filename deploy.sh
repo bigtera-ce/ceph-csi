@@ -28,7 +28,7 @@ push_helm_charts() {
 	pushd tmp/csi-charts/docs >/dev/null
 	helm repo index .
 	git add --all :/ && git commit -m "Update for helm charts $PACKAGE-$VERSION"
-	git push https://"$GITHUB_TOKEN"@github.com/ceph/csi-charts
+	git push https://"$GITHUB_TOKEN"@github.com/bigtera-ce/csi-charts
 	popd >/dev/null
 
 }
@@ -91,7 +91,7 @@ if [ "${TRAVIS_PULL_REQUEST}" == "false" ]; then
 	chmod 700 get_helm.sh
 	./get_helm.sh
 
-	git clone https://github.com/ceph/csi-charts
+	git clone https://github.com/bigtera-ce/csi-charts
 
 	mkdir -p csi-charts/docs
 	popd >/dev/null

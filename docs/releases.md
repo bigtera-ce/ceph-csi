@@ -58,7 +58,7 @@ of each release:
 
 - Raise an issue and assign to themselves.
 
-[new issue in this repository](https://github.com/ceph/ceph-csi/issues/new)
+[new issue in this repository](https://github.com/bigtera-ce/ceph-csi/issues/new)
 
   This issue is used to track the progress of the release with maximum visibility.
 

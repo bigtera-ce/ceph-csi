@@ -18,7 +18,7 @@ serviceAccounts:
     name:
 
 # Configuration for the CSI to connect to the cluster
-# Ref: https://github.com/ceph/ceph-csi/blob/master/examples/README.md
+# Ref: https://github.com/bigtera-ce/ceph-csi/blob/master/examples/README.md
 # Example:
 # csiConfig:
 #   - clusterID: "<cluster-id>"
@@ -103,7 +103,7 @@ nodeplugin:
 
   plugin:
     image:
-      repository: quay.io/cephcsi/cephcsi
+      repository: bigtera/bigtera-csi
       tag: v2.0-canary
       pullPolicy: IfNotPresent
     resources: {}

@@ -24,10 +24,10 @@ import (
 	"runtime"
 	"time"
 
-	"github.com/ceph/ceph-csi/pkg/cephfs"
-	"github.com/ceph/ceph-csi/pkg/liveness"
-	"github.com/ceph/ceph-csi/pkg/rbd"
-	"github.com/ceph/ceph-csi/pkg/util"
+	"github.com/bigtera-ce/ceph-csi/pkg/cephfs"
+	"github.com/bigtera-ce/ceph-csi/pkg/liveness"
+	"github.com/bigtera-ce/ceph-csi/pkg/rbd"
+	"github.com/bigtera-ce/ceph-csi/pkg/util"
 	"k8s.io/klog"
 )
 

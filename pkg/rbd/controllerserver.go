@@ -20,8 +20,8 @@ import (
 	"context"
 	"fmt"
 
-	csicommon "github.com/ceph/ceph-csi/pkg/csi-common"
-	"github.com/ceph/ceph-csi/pkg/util"
+	csicommon "github.com/bigtera-ce/ceph-csi/pkg/csi-common"
+	"github.com/bigtera-ce/ceph-csi/pkg/util"
 
 	"github.com/container-storage-interface/spec/lib/go/csi"
 	"github.com/kubernetes-csi/csi-lib-utils/protosanitizer"

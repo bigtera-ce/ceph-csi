@@ -49,7 +49,7 @@ from v1.2.x to v2.0.0
 
 **Ceph-csi releases from master are expressly unsupported.** It is strongly
 recommended that you use [official
-releases](https://github.com/ceph/ceph-csi/releases) of Ceph-csi. Unreleased
+releases](https://github.com/bigtera-ce/ceph-csi/releases) of Ceph-csi. Unreleased
 versions from the master branch are subject to changes and incompatibilities
 that will not be supported in the official releases. Builds from the master
 branch can have functionality changed and even removed at any time without
@@ -58,7 +58,7 @@ compatibility support and without prior notice.
 git checkout release v2.0.0 branch
 
 ```bash
-[$] git clone https://github.com/ceph/ceph-csi.git
+[$] git clone https://github.com/bigtera-ce/ceph-csi.git
 [$] git check v2.0.0
 [$] cd ./ceph-csi
 ```

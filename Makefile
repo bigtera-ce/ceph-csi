@@ -16,7 +16,7 @@
 
 CONTAINER_CMD?=docker
 
-CSI_IMAGE_NAME=$(if $(ENV_CSI_IMAGE_NAME),$(ENV_CSI_IMAGE_NAME),quay.io/cephcsi/cephcsi)
+CSI_IMAGE_NAME=$(if $(ENV_CSI_IMAGE_NAME),$(ENV_CSI_IMAGE_NAME),bigtera/bigtera-csi)
 CSI_IMAGE_VERSION=$(if $(ENV_CSI_IMAGE_VERSION),$(ENV_CSI_IMAGE_VERSION),v2.0-canary)
 CSI_IMAGE=$(CSI_IMAGE_NAME):$(CSI_IMAGE_VERSION)
 
@@ -24,7 +24,7 @@ $(info cephcsi image settings: $(CSI_IMAGE_NAME) version $(CSI_IMAGE_VERSION))
 
 GIT_COMMIT=$(shell git rev-list -1 HEAD)
 
-GO_PROJECT=github.com/ceph/ceph-csi
+GO_PROJECT=github.com/bigtera-ce/ceph-csi
 
 # go build flags
 LDFLAGS ?=
@@ -53,7 +53,7 @@ static-check:
 	./scripts/gosec.sh
 
 func-test:
-	go test github.com/ceph/ceph-csi/e2e $(TESTOPTIONS)
+	go test github.com/bigtera-ce/ceph-csi/e2e $(TESTOPTIONS)
 
 .PHONY: cephcsi
 cephcsi:

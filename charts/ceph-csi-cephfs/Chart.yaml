@@ -9,7 +9,7 @@ keywords:
   - ceph
   - cephfs
   - ceph-csi
-home: https://github.com/ceph/ceph-csi
+home: https://github.com/bigtera-ce/ceph-csi
 sources:
-  - https://github.com/ceph/ceph-csi/tree/master/charts/ceph-csi-cephfs
+  - https://github.com/bigtera-ce/ceph-csi/tree/master/charts/ceph-csi-cephfs
 icon: https://raw.githubusercontent.com/ceph/ceph-csi/master/assets/ceph-logo.png

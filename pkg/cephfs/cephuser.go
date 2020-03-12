@@ -19,7 +19,7 @@ package cephfs
 import (
 	"context"
 
-	"github.com/ceph/ceph-csi/pkg/util"
+	"github.com/bigtera-ce/ceph-csi/pkg/util"
 )
 
 const (
