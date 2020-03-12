@@ -63,6 +63,7 @@ func getPools(ctx context.Context, monitors string, cr *Credentials) ([]cephStor
 	stdout, _, err := ExecCommand(
 		"ceph",
 		"-m", monitors,
+		"--auth_supported", cr.Auth,
 		"--id", cr.ID,
 		"--keyfile="+cr.KeyFile,
 		"-c", CephConfigPath,
@@ -122,6 +123,7 @@ func SetOMapKeyValue(ctx context.Context, monitors string, cr *Credentials, pool
 	// Command: "rados <options> setomapval oMapName oMapKey keyValue"
 	args := []string{
 		"-m", monitors,
+		"--auth_supported", cr.Auth,
 		"--id", cr.ID,
 		"--keyfile=" + cr.KeyFile,
 		"-c", CephConfigPath,
@@ -157,6 +159,7 @@ func GetOMapValue(ctx context.Context, monitors string, cr *Credentials, poolNam
 
 	args := []string{
 		"-m", monitors,
+		"--auth_supported", cr.Auth,
 		"--id", cr.ID,
 		"--keyfile=" + cr.KeyFile,
 		"-c", CephConfigPath,
@@ -199,6 +202,7 @@ func RemoveOMapKey(ctx context.Context, monitors string, cr *Credentials, poolNa
 	// Command: "rados <options> rmomapkey oMapName oMapKey"
 	args := []string{
 		"-m", monitors,
+		"--auth_supported", cr.Auth,
 		"--id", cr.ID,
 		"--keyfile=" + cr.KeyFile,
 		"-c", CephConfigPath,
@@ -227,6 +231,7 @@ func CreateObject(ctx context.Context, monitors string, cr *Credentials, poolNam
 	// Command: "rados <options> create objectName"
 	args := []string{
 		"-m", monitors,
+		"--auth_supported", cr.Auth,
 		"--id", cr.ID,
 		"--keyfile=" + cr.KeyFile,
 		"-c", CephConfigPath,
@@ -257,6 +262,7 @@ func RemoveObject(ctx context.Context, monitors string, cr *Credentials, poolNam
 	// Command: "rados <options> rm oMapName"
 	args := []string{
 		"-m", monitors,
+		"--auth_supported", cr.Auth,
 		"--id", cr.ID,
 		"--keyfile=" + cr.KeyFile,
 		"-c", CephConfigPath,
@@ -285,6 +291,7 @@ func RemoveObject(ctx context.Context, monitors string, cr *Credentials, poolNam
 func SetImageMeta(ctx context.Context, cr *Credentials, monitors, imageSpec, key, value string) error {
 	args := []string{
 		"-m", monitors,
+		"--auth_supported", cr.Auth,
 		"--id", cr.ID,
 		"--keyfile=" + cr.KeyFile,
 		"-c", CephConfigPath,
@@ -305,6 +312,7 @@ func SetImageMeta(ctx context.Context, cr *Credentials, monitors, imageSpec, key
 func GetImageMeta(ctx context.Context, cr *Credentials, monitors, imageSpec, key string) (string, error) {
 	args := []string{
 		"-m", monitors,
+		"--auth_supported", cr.Auth,
 		"--id", cr.ID,
 		"--keyfile=" + cr.KeyFile,
 		"-c", CephConfigPath,

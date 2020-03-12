@@ -68,6 +68,7 @@ func getVolumeRootPathCeph(ctx context.Context, volOptions *volumeOptions, cr *u
 		csiSubvolumeGroup,
 		"-m", volOptions.Monitors,
 		"-c", util.CephConfigPath,
+		"--auth_supported", cr.Auth,
 		"-n", cephEntityClientPrefix+cr.ID,
 		"--keyfile="+cr.KeyFile)
 
@@ -96,6 +97,7 @@ func createVolume(ctx context.Context, volOptions *volumeOptions, cr *util.Crede
 			csiSubvolumeGroup,
 			"-m", volOptions.Monitors,
 			"-c", util.CephConfigPath,
+			"--auth_supported", cr.Auth,
 			"-n", cephEntityClientPrefix+cr.ID,
 			"--keyfile="+cr.KeyFile)
 		if err != nil {
@@ -118,6 +120,7 @@ func createVolume(ctx context.Context, volOptions *volumeOptions, cr *util.Crede
 		"--mode", "777",
 		"-m", volOptions.Monitors,
 		"-c", util.CephConfigPath,
+		"--auth_supported", cr.Auth,
 		"-n", cephEntityClientPrefix + cr.ID,
 		"--keyfile=" + cr.KeyFile,
 	}
@@ -215,6 +218,7 @@ func purgeVolume(ctx context.Context, volID volumeID, cr *util.Credentials, volO
 		csiSubvolumeGroup,
 		"-m", volOptions.Monitors,
 		"-c", util.CephConfigPath,
+		"--auth_supported", cr.Auth,
 		"-n", cephEntityClientPrefix+cr.ID,
 		"--keyfile="+cr.KeyFile)
 	if err != nil {

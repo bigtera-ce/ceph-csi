@@ -31,9 +31,11 @@ const (
 	credMonitors         = "monitors"
 	tmpKeyFileLocation   = "/tmp/csi/keys"
 	tmpKeyFileNamePrefix = "keyfile-"
+	authSupported        = "authSupported"
 )
 
 type Credentials struct {
+	Auth    string
 	ID      string
 	KeyFile string
 }
@@ -76,6 +78,21 @@ func newCredentialsFromSecret(idField, keyField string, secrets map[string]strin
 	if len(secrets) == 0 {
 		return nil, errors.New("provided secret is empty")
 	}
+
+	if c.Auth, ok = secrets[authSupported]; !ok {
+		return nil, fmt.Errorf("missing '%s' field in secrets", authSupported)
+	}
+
+	if c.Auth != "none" && c.Auth != "cephx" {
+		return nil, fmt.Errorf("'%s' field must have the value of 'none' or 'cephx'", authSupported)
+	}
+
+	if c.Auth == "none" {
+		c.ID = "dummyID"
+		c.KeyFile = "dummyFile"
+		return c, nil
+	}
+
 	if c.ID, ok = secrets[idField]; !ok {
 		return nil, fmt.Errorf("missing ID field '%s' in secrets", idField)
 	}
@@ -95,7 +112,9 @@ func newCredentialsFromSecret(idField, keyField string, secrets map[string]strin
 
 func (cr *Credentials) DeleteCredentials() {
 	// don't complain about unhandled error
-	_ = os.Remove(cr.KeyFile)
+	if cr.Auth != "none" {
+		_ = os.Remove(cr.KeyFile)
+	}
 }
 
 func NewUserCredentials(secrets map[string]string) (*Credentials, error) {
@@ -109,6 +128,7 @@ func NewAdminCredentials(secrets map[string]string) (*Credentials, error) {
 func NewCredentials(id, key string) (*Credentials, error) {
 	var c = &Credentials{}
 
+	c.Auth = "cephx"
 	c.ID = id
 	keyFile, err := storeKey(key)
 	if err == nil {

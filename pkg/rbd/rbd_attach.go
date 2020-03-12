@@ -209,6 +209,7 @@ func createPath(ctx context.Context, volOpt *rbdVolume, cr *util.Credentials) (s
 
 	// Map options
 	mapOptions := []string{
+		"--auth_supported", cr.Auth,
 		"--id", cr.ID,
 		"-m", volOpt.Monitors,
 		"--keyfile=" + cr.KeyFile,

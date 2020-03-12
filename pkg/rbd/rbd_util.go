@@ -125,7 +125,15 @@ func createImage(ctx context.Context, pOpts *rbdVolume, volSz int64, cr *util.Cr
 	klog.V(4).Infof(util.Log(ctx, logMsg),
 		image, volSzMiB, pOpts.ImageFeatures, pOpts.Monitors, pOpts.Pool)
 
-	args := []string{"create", image, "--size", volSzMiB, "--pool", pOpts.Pool, "--id", cr.ID, "-m", pOpts.Monitors, "--keyfile=" + cr.KeyFile, "--image-feature", pOpts.ImageFeatures}
+	args := []string{
+		"create", image,
+		"--size", volSzMiB,
+		"--pool", pOpts.Pool,
+		"--auth_supported", cr.Auth,
+		"--id", cr.ID,
+		"-m", pOpts.Monitors,
+		"--keyfile=" + cr.KeyFile,
+		"--image-feature", pOpts.ImageFeatures}
 
 	if pOpts.DataPool != "" {
 		args = append(args, "--data-pool", pOpts.DataPool)
@@ -148,7 +156,13 @@ func rbdStatus(ctx context.Context, pOpts *rbdVolume, cr *util.Credentials) (boo
 	image := pOpts.RbdImageName
 
 	klog.V(4).Infof(util.Log(ctx, "rbd: status %s using mon %s, pool %s"), image, pOpts.Monitors, pOpts.Pool)
-	args := []string{"status", image, "--pool", pOpts.Pool, "-m", pOpts.Monitors, "--id", cr.ID, "--keyfile=" + cr.KeyFile}
+	args := []string{
+		"status", image,
+		"--pool", pOpts.Pool,
+		"-m", pOpts.Monitors,
+		"--auth_supported", cr.Auth,
+		"--id", cr.ID,
+		"--keyfile=" + cr.KeyFile}
 	cmd, err := execCommand("rbd", args)
 	output = string(cmd)
 
@@ -180,6 +194,7 @@ func rbdManagerTaskDeleteImage(ctx context.Context, pOpts *rbdVolume, cr *util.C
 
 	args := []string{"rbd", "task", "add", "remove",
 		pOpts.Pool + "/" + pOpts.RbdImageName,
+		"--auth_supported", cr.Auth,
 		"--id", cr.ID,
 		"--keyfile=" + cr.KeyFile,
 		"-m", pOpts.Monitors,
@@ -223,6 +238,7 @@ func deleteImage(ctx context.Context, pOpts *rbdVolume, cr *util.Credentials) er
 	if !rbdCephMgrSupported {
 		// attempt older style deletion
 		args := []string{"rm", image, "--pool", pOpts.Pool, "--id", cr.ID, "-m", pOpts.Monitors,
+			"--auth_supported", cr.Auth,
 			"--keyfile=" + cr.KeyFile}
 		output, err = execCommand("rbd", args)
 	}
@@ -537,8 +553,14 @@ func protectSnapshot(ctx context.Context, pOpts *rbdSnapshot, cr *util.Credentia
 	snapName := pOpts.RbdSnapName
 
 	klog.V(4).Infof(util.Log(ctx, "rbd: snap protect %s using mon %s, pool %s "), image, pOpts.Monitors, pOpts.Pool)
-	args := []string{"snap", "protect", "--pool", pOpts.Pool, "--snap", snapName, image, "--id",
-		cr.ID, "-m", pOpts.Monitors, "--keyfile=" + cr.KeyFile}
+	args := []string{"snap", "protect",
+		"--pool", pOpts.Pool,
+		"--snap", snapName,
+		image,
+		"--auth_supported", cr.Auth,
+		"--id", cr.ID,
+		"-m", pOpts.Monitors,
+		"--keyfile=" + cr.KeyFile}
 
 	output, err := execCommand("rbd", args)
 
@@ -556,8 +578,14 @@ func createSnapshot(ctx context.Context, pOpts *rbdSnapshot, cr *util.Credential
 	snapName := pOpts.RbdSnapName
 
 	klog.V(4).Infof(util.Log(ctx, "rbd: snap create %s using mon %s, pool %s"), image, pOpts.Monitors, pOpts.Pool)
-	args := []string{"snap", "create", "--pool", pOpts.Pool, "--snap", snapName, image,
-		"--id", cr.ID, "-m", pOpts.Monitors, "--keyfile=" + cr.KeyFile}
+	args := []string{"snap", "create",
+		"--pool", pOpts.Pool,
+		"--snap", snapName,
+		image,
+		"--auth_supported", cr.Auth,
+		"--id", cr.ID,
+		"-m", pOpts.Monitors,
+		"--keyfile=" + cr.KeyFile}
 
 	output, err := execCommand("rbd", args)
 
@@ -575,8 +603,14 @@ func unprotectSnapshot(ctx context.Context, pOpts *rbdSnapshot, cr *util.Credent
 	snapName := pOpts.RbdSnapName
 
 	klog.V(4).Infof(util.Log(ctx, "rbd: snap unprotect %s using mon %s, pool %s"), image, pOpts.Monitors, pOpts.Pool)
-	args := []string{"snap", "unprotect", "--pool", pOpts.Pool, "--snap", snapName, image, "--id",
-		cr.ID, "-m", pOpts.Monitors, "--keyfile=" + cr.KeyFile}
+	args := []string{"snap", "unprotect",
+		"--pool", pOpts.Pool,
+		"--snap", snapName,
+		image,
+		"--auth_supported", cr.Auth,
+		"--id", cr.ID,
+		"-m", pOpts.Monitors,
+		"--keyfile=" + cr.KeyFile}
 
 	output, err := execCommand("rbd", args)
 
@@ -594,8 +628,14 @@ func deleteSnapshot(ctx context.Context, pOpts *rbdSnapshot, cr *util.Credential
 	snapName := pOpts.RbdSnapName
 
 	klog.V(4).Infof(util.Log(ctx, "rbd: snap rm %s using mon %s, pool %s"), image, pOpts.Monitors, pOpts.Pool)
-	args := []string{"snap", "rm", "--pool", pOpts.Pool, "--snap", snapName, image, "--id",
-		cr.ID, "-m", pOpts.Monitors, "--keyfile=" + cr.KeyFile}
+	args := []string{"snap", "rm",
+		"--pool", pOpts.Pool,
+		"--snap", snapName,
+		image,
+		"--auth_supported", cr.Auth,
+		"--id", cr.ID,
+		"-m", pOpts.Monitors,
+		"--keyfile=" + cr.KeyFile}
 
 	output, err := execCommand("rbd", args)
 
@@ -619,7 +659,11 @@ func restoreSnapshot(ctx context.Context, pVolOpts *rbdVolume, pSnapOpts *rbdSna
 
 	klog.V(4).Infof(util.Log(ctx, "rbd: clone %s using mon %s, pool %s"), image, pVolOpts.Monitors, pVolOpts.Pool)
 	args := []string{"clone", pSnapOpts.Pool + "/" + pSnapOpts.RbdImageName + "@" + snapName,
-		pVolOpts.Pool + "/" + image, "--id", cr.ID, "-m", pVolOpts.Monitors, "--keyfile=" + cr.KeyFile}
+		pVolOpts.Pool + "/" + image,
+		"--auth_supported", cr.Auth,
+		"--id", cr.ID,
+		"-m", pVolOpts.Monitors,
+		"--keyfile=" + cr.KeyFile}
 
 	output, err := execCommand("rbd", args)
 
@@ -675,6 +719,7 @@ func getImageInfo(ctx context.Context, monitors string, cr *util.Credentials, po
 	stdout, stderr, err := util.ExecCommand(
 		"rbd",
 		"-m", monitors,
+		"--auth_supported", cr.Auth,
 		"--id", cr.ID,
 		"--keyfile="+cr.KeyFile,
 		"-c", util.CephConfigPath,
@@ -724,6 +769,7 @@ func getSnapInfo(ctx context.Context, monitors string, cr *util.Credentials, poo
 	stdout, stderr, err := util.ExecCommand(
 		"rbd",
 		"-m", monitors,
+		"--auth_supported", cr.Auth,
 		"--id", cr.ID,
 		"--keyfile="+cr.KeyFile,
 		"-c", util.CephConfigPath,
@@ -838,7 +884,13 @@ func resizeRBDImage(rbdVol *rbdVolume, newSize int64, cr *util.Credentials) erro
 	image := rbdVol.RbdImageName
 	volSzMiB := fmt.Sprintf("%dM", newSize)
 
-	args := []string{"resize", image, "--size", volSzMiB, "--pool", rbdVol.Pool, "--id", cr.ID, "-m", mon, "--keyfile=" + cr.KeyFile}
+	args := []string{"resize", image,
+		"--size", volSzMiB,
+		"--pool", rbdVol.Pool,
+		"--id", cr.ID,
+		"-m", mon,
+		"--auth_supported", cr.Auth,
+		"--keyfile=" + cr.KeyFile}
 	output, err := execCommand("rbd", args)
 
 	if err != nil {
