@@ -4,25 +4,6 @@
 The RBD CSI plugin is able to provision new RBD images and
 attach and mount those to workloads.
 
-## Building
-
-CSI plugin can be compiled in a form of a binary file or in a form of a
-Docker image. When compiled as a binary file, the result is stored in
-`_output/` directory with the name `cephcsi`. When compiled as an image, it's
-stored in the local Docker image store with name `cephcsi`.
-
-Building binary:
-
-```bash
-make cephcsi
-```
-
-Building Docker image:
-
-```bash
-make image-cephcsi
-```
-
 ## Configuration
 
 **Available command line arguments:**

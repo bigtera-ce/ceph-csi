@@ -4,27 +4,6 @@
 The CSI CephFS plugin is able to both provision new CephFS volumes
 and attach and mount existing ones to workloads.
 
-## Building
-
-CSI plugin can be compiled in the form of a binary file or in the form
-of a Docker image.
-When compiled as a binary file, the result is stored in `_output/`
-directory with the name `cephcsi`.
-When compiled as an image, it's stored in the local Docker image store
-with name `cephcsi`.
-
-Building binary:
-
-```bash
-make cephcsi
-```
-
-Building Docker image:
-
-```bash
-make image-cephcsi
-```
-
 ## Configuration
 
 **NOTE:** To make CephFS CSI driver version >= 1.1.0 work with Ceph v14.2.2
