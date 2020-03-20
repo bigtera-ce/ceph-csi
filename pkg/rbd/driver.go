@@ -118,7 +118,7 @@ func (r *Driver) Run(conf *util.Config, cachePersister util.CachePersister) {
 		r.cd.AddControllerServiceCapabilities([]csi.ControllerServiceCapability_RPC_Type{
 			csi.ControllerServiceCapability_RPC_CREATE_DELETE_VOLUME,
 			csi.ControllerServiceCapability_RPC_CREATE_DELETE_SNAPSHOT,
-			csi.ControllerServiceCapability_RPC_CLONE_VOLUME,
+			// csi.ControllerServiceCapability_RPC_CLONE_VOLUME,
 			csi.ControllerServiceCapability_RPC_EXPAND_VOLUME,
 		})
 		// We only support the multi-writer option when using block, but it's a supported capability for the plugin in general
