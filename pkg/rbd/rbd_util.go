@@ -304,8 +304,8 @@ func genSnapFromSnapID(ctx context.Context, rbdSnap *rbdSnapshot, snapshotID str
 
 	err := vi.DecomposeCSIID(rbdSnap.SnapID)
 	if err != nil {
-		klog.Errorf(util.Log(ctx, "error decoding snapshot ID (%s) (%s)"), err, rbdSnap.SnapID)
-		return err
+		err = fmt.Errorf("error decoding snapshot ID (%s) (%s)", err, rbdSnap.SnapID)
+		return ErrInvalidSnapID{err}
 	}
 
 	rbdSnap.ClusterID = vi.ClusterID

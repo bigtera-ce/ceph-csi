@@ -255,6 +255,11 @@ func (cs *ControllerServer) checkSnapshot(ctx context.Context, req *csi.CreateVo
 
 	rbdSnap := &rbdSnapshot{}
 	if err = genSnapFromSnapID(ctx, rbdSnap, snapshotID, cr); err != nil {
+		if _, ok := err.(ErrInvalidSnapID); ok {
+			klog.Errorf(util.Log(ctx, "failed to get backend snapshot for %s: %v"), snapshotID, err)
+			return status.Error(codes.NotFound, err.Error())
+		}
+
 		if _, ok := err.(ErrSnapNotFound); !ok {
 			return status.Error(codes.Internal, err.Error())
 		}
@@ -630,6 +635,11 @@ func (cs *ControllerServer) DeleteSnapshot(ctx context.Context, req *csi.DeleteS
 
 	rbdSnap := &rbdSnapshot{}
 	if err = genSnapFromSnapID(ctx, rbdSnap, snapshotID, cr); err != nil {
+		if _, ok := err.(ErrInvalidSnapID); ok {
+			klog.Warningf(util.Log(ctx, "invalid snapshot ID '%s': %v"), snapshotID, err)
+			return &csi.DeleteSnapshotResponse{}, nil
+		}
+
 		// if error is ErrPoolNotFound, the pool is already deleted we dont
 		// need to worry about deleting snapshot or omap data, return success
 		if _, ok := err.(util.ErrPoolNotFound); ok {

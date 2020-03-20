@@ -58,6 +58,16 @@ func (e ErrInvalidVolID) Error() string {
 	return e.err.Error()
 }
 
+// ErrInvalidSnapID is returned when a CSI passed SnapID does not conform to any known snapshot ID
+// formats
+type ErrInvalidSnapID struct {
+	err error
+}
+
+func (e ErrInvalidSnapID) Error() string {
+	return e.err.Error()
+}
+
 // ErrMissingStash is returned when the image metadata stash file is not found
 type ErrMissingStash struct {
 	err error
