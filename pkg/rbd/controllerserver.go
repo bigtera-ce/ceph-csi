@@ -428,12 +428,33 @@ func (cs *ControllerServer) DeleteVolume(ctx context.Context, req *csi.DeleteVol
 // ValidateVolumeCapabilities checks whether the volume capabilities requested
 // are supported.
 func (cs *ControllerServer) ValidateVolumeCapabilities(ctx context.Context, req *csi.ValidateVolumeCapabilitiesRequest) (*csi.ValidateVolumeCapabilitiesResponse, error) {
-	if req.GetVolumeId() == "" {
+	volumeID := req.GetVolumeId()
+	if volumeID == "" {
 		return nil, status.Error(codes.InvalidArgument, "empty volume ID in request")
 	}
 
 	if len(req.VolumeCapabilities) == 0 {
 		return nil, status.Error(codes.InvalidArgument, "empty volume capabilities in request")
+	}
+
+	cr, err := util.NewUserCredentials(req.GetSecrets())
+	if err != nil {
+		return nil, status.Error(codes.Internal, err.Error())
+	}
+	defer cr.DeleteCredentials()
+
+	if acquired := cs.VolumeLocks.TryAcquire(volumeID); !acquired {
+		klog.Infof(util.Log(ctx, util.VolumeOperationAlreadyExistsFmt), volumeID)
+		return nil, status.Errorf(codes.Aborted, util.VolumeOperationAlreadyExistsFmt, volumeID)
+	}
+	defer cs.VolumeLocks.Release(volumeID)
+
+	rbdVol := &rbdVolume{}
+	if err = genVolFromVolID(ctx, rbdVol, volumeID, cr); err != nil {
+		if _, ok := err.(ErrInvalidVolID); ok {
+			return nil, status.Errorf(codes.NotFound, err.Error())
+		}
+		return nil, err
 	}
 
 	for _, cap := range req.VolumeCapabilities {
@@ -466,6 +487,10 @@ func (cs *ControllerServer) CreateSnapshot(ctx context.Context, req *csi.CreateS
 	rbdVol := new(rbdVolume)
 	err = genVolFromVolID(ctx, rbdVol, req.GetSourceVolumeId(), cr)
 	if err != nil {
+		if _, ok := err.(ErrInvalidVolID); ok {
+			return nil, status.Errorf(codes.NotFound, err.Error())
+		}
+
 		if _, ok := err.(ErrImageNotFound); ok {
 			return nil, status.Errorf(codes.NotFound, "source Volume ID %s not found", req.GetSourceVolumeId())
 		}
@@ -734,6 +759,10 @@ func (cs *ControllerServer) ControllerExpandVolume(ctx context.Context, req *csi
 	rbdVol := &rbdVolume{}
 	err = genVolFromVolID(ctx, rbdVol, volID, cr)
 	if err != nil {
+		if _, ok := err.(ErrInvalidVolID); ok {
+			return nil, status.Errorf(codes.NotFound, err.Error())
+		}
+
 		if _, ok := err.(ErrImageNotFound); ok {
 			return nil, status.Errorf(codes.NotFound, "volume ID %s not found", volID)
 		}

@@ -87,9 +87,14 @@ func (ns *DefaultNodeServer) NodeGetVolumeStats(ctx context.Context, req *csi.No
 		err = fmt.Errorf("targetpath %v is empty", targetPath)
 		return nil, status.Error(codes.InvalidArgument, err.Error())
 	}
-	/*
-		volID := req.GetVolumeId()
 
+	volID := req.GetVolumeId()
+	if volID == "" {
+		err = fmt.Errorf("volID %v is empty", volID)
+		return nil, status.Error(codes.InvalidArgument, err.Error())
+	}
+
+	/*
 		TODO: Map the volumeID to the targetpath.
 
 		CephFS:
@@ -112,7 +117,7 @@ func (ns *DefaultNodeServer) NodeGetVolumeStats(ctx context.Context, req *csi.No
 
 	if err != nil {
 		if os.IsNotExist(err) {
-			return nil, status.Errorf(codes.InvalidArgument, "targetpath %s doesnot exist", targetPath)
+			return nil, status.Errorf(codes.NotFound, "targetpath %s doesnot exist", targetPath)
 		}
 		return nil, err
 	}
