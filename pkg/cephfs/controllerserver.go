@@ -307,12 +307,37 @@ func (cs *ControllerServer) DeleteVolume(ctx context.Context, req *csi.DeleteVol
 func (cs *ControllerServer) ValidateVolumeCapabilities(
 	ctx context.Context,
 	req *csi.ValidateVolumeCapabilitiesRequest) (*csi.ValidateVolumeCapabilitiesResponse, error) {
+
+	volID := req.GetVolumeId()
+	secrets := req.GetSecrets()
+
+	if volID == "" {
+		return nil, status.Error(codes.InvalidArgument, "empty volume ID in request")
+	}
+
+	if len(req.VolumeCapabilities) == 0 {
+		return nil, status.Error(codes.InvalidArgument, "empty volume capabilities in request")
+	}
+
+	// Find the volume using the provided VolumeID
+	_, _, err := newVolumeOptionsFromVolID(ctx, volID, nil, secrets)
+	if err != nil {
+		if _, ok := err.(ErrInvalidVolID); ok {
+			return nil, status.Error(codes.NotFound, err.Error())
+		}
+		if _, ok := err.(ErrVolumeNotFound); ok {
+			return nil, status.Error(codes.NotFound, err.Error())
+		}
+		return nil, status.Error(codes.Internal, err.Error())
+	}
+
 	// Cephfs doesn't support Block volume
 	for _, cap := range req.VolumeCapabilities {
 		if cap.GetBlock() != nil {
 			return &csi.ValidateVolumeCapabilitiesResponse{Message: ""}, nil
 		}
 	}
+
 	return &csi.ValidateVolumeCapabilitiesResponse{
 		Confirmed: &csi.ValidateVolumeCapabilitiesResponse_Confirmed{
 			VolumeCapabilities: req.VolumeCapabilities,
