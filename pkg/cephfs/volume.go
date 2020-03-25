@@ -84,6 +84,35 @@ func getVolumeRootPathCeph(ctx context.Context, volOptions *volumeOptions, cr *u
 	return strings.TrimSuffix(string(stdout), "\n"), nil
 }
 
+func getVolumeSizeCeph(ctx context.Context, volOptions *volumeOptions, cr *util.Credentials, volID volumeID) (int64, error) {
+	stdout, stderr, err := util.ExecCommand(
+		"ceph",
+		"fs",
+		"subvolume",
+		"getsize",
+		volOptions.FsName,
+		string(volID),
+		"--group_name",
+		csiSubvolumeGroup,
+		"-m", volOptions.Monitors,
+		"-c", util.CephConfigPath,
+		"--auth_supported", cr.Auth,
+		"-n", cephEntityClientPrefix+cr.ID,
+		"--keyfile="+cr.KeyFile)
+
+	if err != nil {
+		klog.Errorf(util.Log(ctx, "failed to get the size for the vol %s(%s)"), string(volID), err)
+
+		if strings.Contains(string(stderr), getVolumeNotFoundErrorString(volID)) {
+			return 0, ErrVolumeNotFound{err}
+		}
+
+		return 0, err
+	}
+
+	return strconv.ParseInt(strings.TrimSuffix(string(stdout), "\n"), 10, 64)
+}
+
 func createVolume(ctx context.Context, volOptions *volumeOptions, cr *util.Credentials, volID volumeID, bytesQuota int64) error {
 	//TODO: When we support multiple fs, need to hande subvolume group create for all fs's
 	if !cephfsInit {

@@ -44,3 +44,14 @@ type ErrVolumeNotFound struct {
 func (e ErrVolumeNotFound) Error() string {
 	return e.err.Error()
 }
+
+// ErrVolNameConflict is generated when a requested CSI volume name already exists but with
+// different properties, and hence is in conflict with the passed in CSI volume name
+type ErrVolNameConflict struct {
+	requestName string
+	err         error
+}
+
+func (e ErrVolNameConflict) Error() string {
+	return e.err.Error()
+}

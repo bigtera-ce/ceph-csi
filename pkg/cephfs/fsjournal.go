@@ -18,6 +18,7 @@ package cephfs
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/bigtera-ce/ceph-csi/pkg/util"
 
@@ -75,7 +76,17 @@ func checkVolExists(ctx context.Context, volOptions *volumeOptions, secret map[s
 		}
 		return nil, err
 	}
-	// TODO: size checks
+
+	size, err := getVolumeSizeCeph(ctx, volOptions, cr, volumeID(vid.FsSubvolName))
+	if err != nil {
+		return nil, err
+	}
+
+	if volOptions.Size > size {
+		err = fmt.Errorf("image with the same name (%s) but with different size already exists",
+			vid.FsSubvolName)
+		return nil, ErrVolNameConflict{vid.FsSubvolName, err}
+	}
 
 	// found a volume already available, process and return it!
 	vi = util.CSIIdentifier{

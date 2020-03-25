@@ -93,14 +93,16 @@ func (cs *ControllerServer) CreateVolume(ctx context.Context, req *csi.CreateVol
 	if req.GetCapacityRange() != nil {
 		volOptions.Size = util.RoundOffBytes(req.GetCapacityRange().GetRequiredBytes())
 	}
+
 	// TODO need to add check for 0 volume size
 
 	vID, err := checkVolExists(ctx, volOptions, secret)
 	if err != nil {
+		if _, ok := err.(ErrVolNameConflict); ok {
+			return nil, status.Error(codes.AlreadyExists, err.Error())
+		}
 		return nil, status.Error(codes.Internal, err.Error())
 	}
-
-	// TODO return error message if requested vol size greater than found volume return error
 
 	if vID != nil {
 		return &csi.CreateVolumeResponse{
