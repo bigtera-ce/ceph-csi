@@ -107,9 +107,13 @@ func (cs *ControllerServer) validateCreateVolumeRequest(req *csi.CreateVolumeReq
 	return nil
 }
 
-func (cs *ControllerServer) validateDeleteVolumeRequest() error {
+func (cs *ControllerServer) validateDeleteVolumeRequest(req *csi.DeleteVolumeRequest) error {
 	if err := cs.Driver.ValidateControllerServiceRequest(csi.ControllerServiceCapability_RPC_CREATE_DELETE_VOLUME); err != nil {
 		return fmt.Errorf("invalid DeleteVolumeRequest: %v", err)
+	}
+
+	if req.GetVolumeId() == "" {
+		return status.Error(codes.InvalidArgument, "Volume ID cannot be empty")
 	}
 
 	return nil

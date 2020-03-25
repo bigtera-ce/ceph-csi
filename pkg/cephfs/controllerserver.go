@@ -215,7 +215,7 @@ func (cs *ControllerServer) deleteVolumeDeprecated(ctx context.Context, req *csi
 
 // DeleteVolume deletes the volume in backend and its reservation
 func (cs *ControllerServer) DeleteVolume(ctx context.Context, req *csi.DeleteVolumeRequest) (*csi.DeleteVolumeResponse, error) {
-	if err := cs.validateDeleteVolumeRequest(); err != nil {
+	if err := cs.validateDeleteVolumeRequest(req); err != nil {
 		klog.Errorf(util.Log(ctx, "DeleteVolumeRequest validation failed: %v"), err)
 		return nil, err
 	}
