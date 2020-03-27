@@ -6,10 +6,12 @@ provisioner, snapshotter, and attacher for Ceph RBD"
 name: ceph-csi-rbd
 version: 2.0-canary
 keywords:
+  - bigtera
+  - virtualstor
   - ceph
   - rbd
   - ceph-csi
 home: https://github.com/bigtera-ce/ceph-csi
 sources:
-  - https://github.com/bigtera-ce/ceph-csi/tree/master/charts/ceph-csi-rbd
+  - https://github.com/bigtera-ce/ceph-csi/tree/bigtera-csi/charts/ceph-csi-rbd
 icon: https://bigtera-ce.github.io/ceph-csi/assets/bigtera-logo.png
