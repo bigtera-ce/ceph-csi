@@ -110,16 +110,14 @@ spec:
           volumeMounts:
             - name: socket-dir
               mountPath: /csi
-            - mountPath: /dev
-              name: host-mount
-            - mountPath: /run/mount
-              name: host-dev
-            - mountPath: /run/mount
-              name: host-mount
-            - mountPath: /sys
-              name: host-sys
-            - mountPath: /lib/modules
-              name: lib-modules
+            - name: host-mount
+              mountPath: /run/mount
+            - name: host-dev
+              mountPath: /dev            
+            - name: host-sys
+              mountPath: /sys
+            - name: lib-modules
+              mountPath: /lib/modules
               readOnly: true
             - name: ceph-csi-config
               mountPath: /etc/ceph-csi-config/
