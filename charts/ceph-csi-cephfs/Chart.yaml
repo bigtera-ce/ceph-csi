@@ -12,4 +12,4 @@ keywords:
 home: https://github.com/bigtera-ce/ceph-csi
 sources:
   - https://github.com/bigtera-ce/ceph-csi/tree/master/charts/ceph-csi-cephfs
-icon: https://raw.githubusercontent.com/ceph/ceph-csi/master/assets/ceph-logo.png
+icon: https://bigtera-ce.github.io/ceph-csi/assets/bigtera-logo.png
