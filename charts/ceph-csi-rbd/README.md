@@ -4,22 +4,28 @@ The ceph-csi-rbd chart adds rbd volume support to your cluster.
 
 ## Install Chart
 
-To install the Chart into your Kubernetes cluster
+Optionally, create a kubernetes namespace, say "ceph-csi-rbd", if you don't want mess up existing one.
 
 ```bash
-helm install --namespace "ceph-csi-rbd" --name "ceph-csi-rbd" ceph-csi/ceph-csi-rbd
+kubectl create namespace ceph-csi-rbd
+```
+
+To install the Chart into the namespace "ceph-csi-rbd" of your Kubernetes cluster
+
+```bash
+helm install --namespace "ceph-csi-rbd" ceph-csi-rbd charts/ceph-csi-rbd
 ```
 
 After installation succeeds, you can get a status of Chart
 
 ```bash
-helm status "ceph-csi-rbd"
+helm status --namespace "ceph-csi-rbd" ceph-csi-rbd
 ```
 
 If you want to delete your Chart, use this command
 
 ```bash
-helm delete  --purge "ceph-csi-rbd"
+helm delete --namespace "ceph-csi-rbd" ceph-csi-rbd
 ```
 
 If you want to delete the namespace, use this command
