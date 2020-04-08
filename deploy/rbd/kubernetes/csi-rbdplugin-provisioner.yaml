@@ -111,7 +111,7 @@ spec:
             - "--controllerserver=true"
             - "--endpoint=$(CSI_ENDPOINT)"
             - "--v=5"
-            - "--drivername=rbd.csi.ceph.com"
+            - "--drivername=csi.block.bigtera.com"
             - "--pidlimit=-1"
             - "--metricsport=8090"
             - "--metricspath=/metrics"

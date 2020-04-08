@@ -33,7 +33,7 @@ items:
     annotations:
       pv.kubernetes.io/bind-completed: "yes"
       pv.kubernetes.io/bound-by-controller: "yes"
-      volume.beta.kubernetes.io/storage-provisioner: rbd.csi.ceph.com
+      volume.beta.kubernetes.io/storage-provisioner: csi.block.bigtera.com
     creationTimestamp: "2019-12-19T05:44:45Z"
     finalizers:
     - kubernetes.io/pvc-protection
@@ -89,7 +89,7 @@ items:
     annotations:
       pv.kubernetes.io/bind-completed: "yes"
       pv.kubernetes.io/bound-by-controller: "yes"
-      volume.beta.kubernetes.io/storage-provisioner: rbd.csi.ceph.com
+      volume.beta.kubernetes.io/storage-provisioner: csi.block.bigtera.com
     creationTimestamp: "2019-12-19T05:44:45Z"
     finalizers:
     - kubernetes.io/pvc-protection
@@ -157,7 +157,7 @@ metadata:
   annotations:
     pv.kubernetes.io/bind-completed: "yes"
     pv.kubernetes.io/bound-by-controller: "yes"
-    volume.beta.kubernetes.io/storage-provisioner: rbd.csi.ceph.com
+    volume.beta.kubernetes.io/storage-provisioner: csi.block.bigtera.com
   creationTimestamp: "2019-12-19T05:56:02Z"
   finalizers:
   - kubernetes.io/pvc-protection
@@ -212,7 +212,7 @@ metadata:
   annotations:
     pv.kubernetes.io/bind-completed: "yes"
     pv.kubernetes.io/bound-by-controller: "yes"
-    volume.beta.kubernetes.io/storage-provisioner: rbd.csi.ceph.com
+    volume.beta.kubernetes.io/storage-provisioner: csi.block.bigtera.com
   creationTimestamp: "2019-12-19T05:56:02Z"
   finalizers:
   - kubernetes.io/pvc-protection
@@ -281,7 +281,7 @@ items:
     annotations:
       pv.kubernetes.io/bind-completed: "yes"
       pv.kubernetes.io/bound-by-controller: "yes"
-      volume.beta.kubernetes.io/storage-provisioner: cephfs.csi.ceph.com
+      volume.beta.kubernetes.io/storage-provisioner: csi.fs.bigtera.com
     creationTimestamp: "2020-01-17T07:55:11Z"
     finalizers:
     - kubernetes.io/pvc-protection
@@ -337,7 +337,7 @@ items:
     annotations:
       pv.kubernetes.io/bind-completed: "yes"
       pv.kubernetes.io/bound-by-controller: "yes"
-      volume.beta.kubernetes.io/storage-provisioner: cephfs.csi.ceph.com
+      volume.beta.kubernetes.io/storage-provisioner: csi.fs.bigtera.com
     creationTimestamp: "2020-01-17T07:55:11Z"
     finalizers:
     - kubernetes.io/pvc-protection

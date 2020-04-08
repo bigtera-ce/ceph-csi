@@ -12,6 +12,6 @@ metadata:
 aggregationRule:
   clusterRoleSelectors:
     - matchLabels:
-        rbac.cephfs.csi.ceph.com/aggregate-to-{{ include "ceph-csi-cephfs.nodeplugin.fullname" . }}: "true"
+        rbac.csi.fs.bigtera.com/aggregate-to-{{ include "ceph-csi-cephfs.nodeplugin.fullname" . }}: "true"
 rules: []
 {{- end -}}

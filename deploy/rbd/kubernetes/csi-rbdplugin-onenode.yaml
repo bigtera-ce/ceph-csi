@@ -29,14 +29,14 @@ spec:
           args:
             - "--v=5"
             - "--csi-address=/csi/csi.sock"
-            - "--kubelet-registration-path=/var/lib/kubelet/plugins/rbd.csi.ceph.com/csi.sock"
+            - "--kubelet-registration-path=/var/lib/kubelet/plugins/csi.block.bigtera.com/csi.sock"
           lifecycle:
             preStop:
               exec:
                 command: [
                   "/bin/sh", "-c",
-                  "rm -rf /registration/rbd.csi.ceph.com \
-                  /registration/rbd.csi.ceph.com-reg.sock"
+                  "rm -rf /registration/csi.block.bigtera.com \
+                  /registration/csi.block.bigtera.com-reg.sock"
                 ]
           env:
             - name: KUBE_NODE_NAME
@@ -63,7 +63,7 @@ spec:
             - "--controllerserver=true"
             - "--endpoint=$(CSI_ENDPOINT)"
             - "--v=5"
-            - "--drivername=rbd.csi.ceph.com"
+            - "--drivername=csi.block.bigtera.com"
             - "--metricsport=8090"
             - "--metricspath=/metrics"
             - "--enablegrpcmetrics=false"
@@ -130,7 +130,7 @@ spec:
       volumes:
         - name: socket-dir
           hostPath:
-            path: /var/lib/kubelet/plugins/rbd.csi.ceph.com
+            path: /var/lib/kubelet/plugins/csi.block.bigtera.com
             type: DirectoryOrCreate
         - name: plugin-dir
           hostPath:

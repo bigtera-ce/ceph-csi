@@ -91,7 +91,7 @@ spec:
             - "--controllerserver=true"
             - "--endpoint=$(CSI_ENDPOINT)"
             - "--v=5"
-            - "--drivername=cephfs.csi.ceph.com"
+            - "--drivername=csi.fs.bigtera.com"
             - "--metadatastorage=k8s_configmap"
             - "--pidlimit=-1"
             - "--metricsport=8091"

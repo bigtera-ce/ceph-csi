@@ -36,9 +36,9 @@ const (
 	cephfsType   = "cephfs"
 	livenessType = "liveness"
 
-	rbdDefaultName      = "rbd.csi.ceph.com"
-	cephfsDefaultName   = "cephfs.csi.ceph.com"
-	livenessDefaultName = "liveness.csi.ceph.com"
+	rbdDefaultName      = "csi.block.bigtera.com"
+	cephfsDefaultName   = "csi.fs.bigtera.com"
+	livenessDefaultName = "liveness.csi.bigtera.com"
 )
 
 var (

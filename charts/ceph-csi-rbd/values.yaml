@@ -235,7 +235,7 @@ provisioner:
 #########################################################
 
 # The directory where the provisioner and pluginSocketFile will be mounted
-socketDir: /var/lib/kubelet/plugins/rbd.csi.ceph.com
+socketDir: /var/lib/kubelet/plugins/csi.block.bigtera.com
 # The filename of the provisioner socket
 provisionerSocketFile: csi-provisioner.sock
 # The filename of the plugin socket
@@ -245,6 +245,6 @@ registrationDir: /var/lib/kubelet/plugins_registry
 # The nodeplugin plugins directory
 pluginDir: /var/lib/kubelet/plugins
 # Name of the csi-driver
-driverName: rbd.csi.ceph.com
+driverName: csi.block.bigtera.com
 # Name of the configmap used for state
 configMapName: ceph-csi-config-rbd

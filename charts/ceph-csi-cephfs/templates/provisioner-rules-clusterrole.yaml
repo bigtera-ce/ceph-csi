@@ -9,7 +9,7 @@ metadata:
     component: {{ .Values.provisioner.name }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
-    rbac.cephfs.csi.ceph.com/aggregate-to-{{ include "ceph-csi-cephfs.provisioner.fullname" . }}: "true"
+    rbac.csi.fs.bigtera.com/aggregate-to-{{ include "ceph-csi-cephfs.provisioner.fullname" . }}: "true"
 rules:
   - apiGroups: [""]
     resources: ["nodes"]

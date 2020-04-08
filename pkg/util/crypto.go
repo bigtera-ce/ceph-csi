@@ -32,7 +32,7 @@ const (
 	mapperFilePathPrefix = "/dev/mapper"
 
 	// image metadata key for encryption
-	encryptionMetaKey = ".rbd.csi.ceph.com/encrypted"
+	encryptionMetaKey = ".csi.block.bigtera.com/encrypted"
 
 	// Encryption passphrase location in K8s secrets
 	encryptionPassphraseKey = "encryptionPassphrase"

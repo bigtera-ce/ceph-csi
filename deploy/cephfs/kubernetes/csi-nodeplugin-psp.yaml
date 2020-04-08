@@ -36,7 +36,7 @@ spec:
       readOnly: true
     - pathPrefix: '/var/lib/kubelet/pods'
       readOnly: false
-    - pathPrefix: '/var/lib/kubelet/plugins/cephfs.csi.ceph.com'
+    - pathPrefix: '/var/lib/kubelet/plugins/csi.fs.bigtera.com'
       readOnly: false
     - pathPrefix: '/var/lib/kubelet/plugins_registry'
       readOnly: false

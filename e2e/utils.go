@@ -606,7 +606,7 @@ func validateEncryptedPVCAndAppBinding(pvcPath, appPath string, f *framework.Fra
 	if err != nil {
 		Fail(err.Error())
 	}
-	encryptedState, err := getImageMeta("replicapool/"+rbdImageID, ".rbd.csi.ceph.com/encrypted", f)
+	encryptedState, err := getImageMeta("replicapool/"+rbdImageID, ".csi.block.bigtera.com/encrypted", f)
 	if err != nil {
 		Fail(err.Error())
 	}
