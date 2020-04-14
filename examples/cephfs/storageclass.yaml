@@ -15,7 +15,7 @@ parameters:
   clusterID: <cluster-id>
 
   # CephFS filesystem name into which the volume shall be created
-  fsName: myfs
+  fsName: cephfs
 
   # (optional) Ceph pool into which volume data shall be stored
   # pool: cephfs_data
