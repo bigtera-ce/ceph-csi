@@ -22,4 +22,5 @@ Bigtera VirtualStor CSI supports both RBD and CephFS backed volumes:
 Bigtera VirtualStor CSI drivers are currently developed and tested **exclusively** on Kubernetes v1.14+ environments.
 
 ## Contact us
-Web: http://www.bigtera.com 
+To find more about Bigtera Software Defined Storage (SDS) solutions, visit www.bigtera.com
+Contact us: info@bigtera.com 
