@@ -30,8 +30,15 @@ import (
 )
 
 const (
+	cephVolumesRoot = "csi-volumes"
+
+	namespacePrefix = "ns-"
 	csiSubvolumeGroup = "csi"
 )
+
+func getCephRootPathLocal(volID volumeID) string {
+	return fmt.Sprintf("%s/controller/volumes/root-%s", PluginFolder, string(volID))
+}
 
 var (
 	// cephfsInit is used to create "csi" subvolume group for the first time the csi plugin loads.
@@ -54,6 +61,10 @@ func getCephRootPathLocalDeprecated(volID volumeID) string {
 
 func getVolumeNotFoundErrorString(volID volumeID) string {
 	return fmt.Sprintf("Error ENOENT: Subvolume '%s' not found", string(volID))
+}
+
+func getCephRootVolumePathLocal(volID volumeID) string {
+	return path.Join(getCephRootPathLocal(volID), cephVolumesRoot, string(volID))
 }
 
 func getVolumeRootPathCeph(ctx context.Context, volOptions *volumeOptions, cr *util.Credentials, volID volumeID) (string, error) {
@@ -113,7 +124,15 @@ func getVolumeSizeCeph(ctx context.Context, volOptions *volumeOptions, cr *util.
 	return strconv.ParseInt(strings.TrimSuffix(string(stdout), "\n"), 10, 64)
 }
 
-func createVolume(ctx context.Context, volOptions *volumeOptions, cr *util.Credentials, volID volumeID, bytesQuota int64) error {
+func getVolumeNamespace(volID volumeID) string {
+	return namespacePrefix + string(volID)
+}
+
+func setVolumeAttribute(ctx context.Context, root, attrName, attrValue string) error {
+	return execCommandErr(ctx, "setfattr", "-n", attrName, "-v", attrValue, root)
+}
+
+func createVolume(ctx context.Context, volOptions *volumeOptions, adminCr *util.Credentials, volID volumeID, bytesQuota int64) error {
 	//TODO: When we support multiple fs, need to hande subvolume group create for all fs's
 	if !cephfsInit {
 		err := execCommandErr(
@@ -126,9 +145,9 @@ func createVolume(ctx context.Context, volOptions *volumeOptions, cr *util.Crede
 			csiSubvolumeGroup,
 			"-m", volOptions.Monitors,
 			"-c", util.CephConfigPath,
-			"--auth_supported", cr.Auth,
-			"-n", cephEntityClientPrefix+cr.ID,
-			"--keyfile="+cr.KeyFile)
+			"--auth_supported", adminCr.Auth,
+			"-n", cephEntityClientPrefix+adminCr.ID,
+			"--keyfile="+adminCr.KeyFile)
 		if err != nil {
 			klog.Errorf(util.Log(ctx, "failed to create subvolume group csi, for the vol %s(%s)"), string(volID), err)
 			return err
@@ -149,9 +168,9 @@ func createVolume(ctx context.Context, volOptions *volumeOptions, cr *util.Crede
 		"--mode", "777",
 		"-m", volOptions.Monitors,
 		"-c", util.CephConfigPath,
-		"--auth_supported", cr.Auth,
-		"-n", cephEntityClientPrefix + cr.ID,
-		"--keyfile=" + cr.KeyFile,
+		"--auth_supported", adminCr.Auth,
+		"-n", cephEntityClientPrefix + adminCr.ID,
+		"--keyfile=" + adminCr.KeyFile,
 	}
 
 	if volOptions.Pool != "" {
@@ -167,6 +186,46 @@ func createVolume(ctx context.Context, volOptions *volumeOptions, cr *util.Crede
 		return err
 	}
 
+	// below is for setfattr
+	if err := mountCephRoot(ctx, volID, volOptions, adminCr); err != nil {
+		return err
+	}
+	defer unmountCephRoot(ctx, volID)
+
+	var (
+		volRoot         = getCephRootVolumePathLocal(volID)
+		volRootCreating = volRoot + "-creating"
+	)
+
+	if pathExists(volRoot) {
+		klog.V(4).Infof("cephfs: volume %s already exists, skipping creation", volID)
+		return nil
+	}
+
+	if err := util.CreateMountPoint(volRootCreating); err != nil {
+		return err
+	}
+
+	if bytesQuota > 0 {
+		if err := setVolumeAttribute(ctx, volRootCreating, "ceph.quota.max_bytes", fmt.Sprintf("%d", bytesQuota)); err != nil {
+			klog.Errorf(util.Log(ctx, "failed to create volume %s: %v"), volOptions.RequestName, err)
+			return err
+		}
+	}
+
+	if err := setVolumeAttribute(ctx, volRootCreating, "ceph.dir.layout.pool", volOptions.Pool); err != nil {
+		return fmt.Errorf("%v\ncephfs: Does pool '%s' exist?", err, volOptions.Pool)
+	}
+
+	if err := setVolumeAttribute(ctx, volRootCreating, "ceph.dir.layout.pool_namespace", getVolumeNamespace(volID)); err != nil {
+		klog.Errorf(util.Log(ctx, "failed to create volume %s: %v"), volOptions.RequestName, err)
+		return err
+	}
+
+	if err := os.Rename(volRootCreating, volRoot); err != nil {
+		return fmt.Errorf("couldn't mark volume %s as created: %v", volID, err)
+	}
+	
 	return nil
 }
 

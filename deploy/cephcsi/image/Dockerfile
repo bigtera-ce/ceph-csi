@@ -8,6 +8,8 @@ LABEL description="Ceph-CSI Plugin"
 
 # Removing ceph-iscsi repo to workaround the repo issue while upgrading
 #RUN rm -f /etc/yum.repos.d/ceph-iscsi.repo && yum -y update && yum clean all
+RUN /bin/ln -sf /usr/lib64/ceph/libceph-common.so.0 /usr/lib64/libceph-common.so.0
+COPY ceph-fuse /usr/bin/ceph-fuse
 ENV CSIBIN=/usr/local/bin/cephcsi
 
 COPY cephcsi $CSIBIN

@@ -29,7 +29,6 @@ import (
 
 	"github.com/bigtera-ce/ceph-csi/pkg/util"
 
-	"golang.org/x/sys/unix"
 	"k8s.io/klog"
 )
 
@@ -143,26 +142,6 @@ func kernelSupportsQuota(release string) bool {
 func loadAvailableMounters(conf *util.Config) error {
 	// #nosec
 	fuseMounterProbe := exec.Command("ceph-fuse", "--version")
-	// #nosec
-	kernelMounterProbe := exec.Command("mount.ceph")
-
-	err := kernelMounterProbe.Run()
-	if err == nil {
-		// fetch the current running kernel info
-		utsname := unix.Utsname{}
-		err := unix.Uname(&utsname)
-		if err != nil {
-			return err
-		}
-		release := string(utsname.Release[:64])
-
-		if conf.ForceKernelCephFS || kernelSupportsQuota(release) {
-			klog.Infof("loaded mounter: %s", volumeMounterKernel)
-			availableMounters = append(availableMounters, volumeMounterKernel)
-		} else {
-			klog.Infof("kernel version < 4.17 might not support quota feature, hence not loading kernel client")
-		}
-	}
 
 	if fuseMounterProbe.Run() == nil {
 		klog.Infof("loaded mounter: %s", volumeMounterFuse)
